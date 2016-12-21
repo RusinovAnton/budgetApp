@@ -14,3 +14,21 @@ h1, h2, h3, h4, h5, h6 {
     width: 900px;
     margin: 0 auto;
 }
+
+input {
+    background: none;
+    border: 2px solid currentColor;
+    padding: 0 2em;
+    height: 40px;
+}
+
+button {
+    border-radius: 0;
+    box-shadow: 0;
+    background: none;
+    border: 2px solid currentColor;
+    padding: 0 2em;
+    line-height: 40px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
