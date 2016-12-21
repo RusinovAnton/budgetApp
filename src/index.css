@@ -1,25 +1,49 @@
+html {
+    font-size: 10px;
+}
+
 body {
     margin: 0;
-    padding: 10px 0;
-    font-size: 20px;
+    padding: 1rem 0;
+    font-size: 2rem;
     background: #f0f0f0;
     font-family: Abel, sans-serif;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 h1, h2, h3, h4, h5, h6 {
-    border-bottom: 1px solid currentColor;
+    margin-top: 0;
+    margin-bottom: 2rem;
+    border-bottom: 0.1rem solid currentColor;
+}
+
+.sidebar {
+    width: 20rem;
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    bottom: 0;
+    padding: 0 2rem;
+}
+
+.bg-dark {
+    background: #545456;
+    color: #f0f0f0
 }
 
 .container {
-    width: 900px;
-    margin: 0 auto;
+    padding-left: 22rem;
+    min-width: 780px;
 }
 
 input {
     background: none;
     border: 2px solid currentColor;
     padding: 0 2em;
-    height: 40px;
+    height: 4rem;
 }
 
 button {
@@ -28,7 +52,11 @@ button {
     background: none;
     border: 2px solid currentColor;
     padding: 0 2em;
-    line-height: 40px;
+    line-height: 3.6rem;
     font-weight: bold;
     text-transform: uppercase;
+}
+
+.mb {
+    margin-bottom: 2rem;
 }

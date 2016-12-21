@@ -36,11 +36,21 @@ class App extends Component {
         const { user, error } = this.state
 
         return (
-            <div className="container">
-                <h1>Budget App</h1>
-                { error && <span className="error">{ error }</span>}
-                <AuthForm user={ user }/>
-            </div>
+            <main>
+                <aside className="sidebar">
+                    <h2>Sidebar</h2>
+                    <ul>
+                        <li>some</li>
+                        <li>bullet</li>
+                        <li>list :D</li>
+                    </ul>
+                </aside>
+                <div className="container">
+                    <h2>Budget App</h2>
+                    { error && <span className="error">{ error }</span>}
+                    <AuthForm user={ user }/>
+                </div>
+            </main>
         )
     }
 }
