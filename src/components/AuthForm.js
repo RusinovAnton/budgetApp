@@ -6,7 +6,7 @@ import PreventDefaultForm from 'prevent-default-form'
 class AuthForm extends Component {
 
     static propTypes = {
-        user: PropTypes.object
+        isLoggedIn: PropTypes.bool,
     }
 
     constructor() {
@@ -53,8 +53,7 @@ class AuthForm extends Component {
     }
 
     render() {
-        const { user } = this.props
-        const isLoggedIn = !!user
+        const { isLoggedIn } = this.props
 
 
         return (

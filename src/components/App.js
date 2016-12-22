@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
-import AuthForm from './AuthForm'
 
 import auth from '../firebase/auth'
+
+import AuthForm from './AuthForm'
+import DatabaseForm from './DatabaseForm'
+import UserMenu from './UserMenu'
 
 class App extends Component {
     constructor() {
@@ -20,16 +23,7 @@ class App extends Component {
     _onAuthStateChange = (user, error) => {
         this.setState({ user, error })
 
-        if (user === null) {
-            console.log('logged off')
-            return
-        }
-
-        console.log(user)
-    }
-
-    _onGettingUser = user => {
-        this.setState({ user })
+        console.log(user, error)
     }
 
     render() {
@@ -47,8 +41,10 @@ class App extends Component {
                 </aside>
                 <div className="container">
                     <h2>Budget App</h2>
+                    <UserMenu user={ user }/>
                     { error && <span className="error">{ error }</span>}
-                    <AuthForm user={ user }/>
+                    <AuthForm isLoggedIn={ !!user }/>
+                    { user && <DatabaseForm/> }
                 </div>
             </main>
         )
