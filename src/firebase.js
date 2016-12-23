@@ -13,8 +13,6 @@ class Firebase {
         this._firebase = firebase.initializeApp(Firebase.config)
         this._auth = this._firebase.auth()
         this._database = this._firebase.database()
-
-        console.log(this)
     }
 
     get auth() {

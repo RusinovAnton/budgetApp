@@ -14,7 +14,7 @@ class DatabaseForm extends Component {
 
         this.ref = AppDatabase.ref(arguments[0].uid)
         this.state = {
-            expenses: [],
+            expenses: null,
             sum: null,
             title: null,
             isPending: true,
@@ -32,7 +32,6 @@ class DatabaseForm extends Component {
         const { uid } = this.props
 
         AppDatabase.set(`${uid}/expenses`, value)
-            .then(response => console.log(response))
             .catch(error => { this.setState({ error: error.message }) })
     }
 
@@ -60,25 +59,28 @@ class DatabaseForm extends Component {
     render() {
         const { expenses, isPending } = this.state
 
-        if (isPending) return <Loader/>
+        if (!expenses && isPending) return <Loader/>
 
         return (
             <div>
+                { isPending && <Loader/> }
                 <Form onSubmit={ this._submitExpenseItem }>
                     <input type="number" step='any' name="sum" onChange={ this._onInputChange }/>
                     <input type="text" name="title" onChange={ this._onInputChange }/>
                 </Form>
-                { expenses
-                    .map(({ sum, title }, index) => {
-                        const removeItem = () => { this._removeExpenseItem(index) }
+                { expenses.length ?
+                    expenses
+                        .map(({ sum, title }, index) => {
+                            const removeItem = () => { this._removeExpenseItem(index) }
 
-                        return (
-                            <p key={ index }>
-                                sum: { sum }, title: { title } <span className="cursor-pointer"
-                                                                     onClick={ removeItem }>&times;</span>
-                            </p>
-                        )
-                    })
+                            return (
+                                <p key={ index }>
+                                    sum: { sum }, title: { title } <span className="cursor-pointer"
+                                                                         onClick={ removeItem }>&times;</span>
+                                </p>
+                            )
+                        })
+                    : 'nothing here yet'
                 }
             </div>
         )
