@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import auth from '../firebase/auth'
+import AppDatabase from '../firebase'
 
 import AuthForm from './AuthForm'
 import DatabaseForm from './DatabaseForm'
@@ -17,7 +17,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        auth.onAuthStateChanged(this._onAuthStateChange)
+        AppDatabase.auth.onAuthStateChanged(this._onAuthStateChange)
     }
 
     _onAuthStateChange = (user, error) => {

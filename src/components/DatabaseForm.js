@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 
-import firebase from '../firebase/base'
-import { dbSetValue } from '../firebase/database'
+import AppDatabase from '../firebase'
 
 import Form from 'prevent-default-form'
 
@@ -19,7 +18,7 @@ class DatabaseForm extends Component {
     }
 
     componentDidMount() {
-        firebase.database()
+        AppDatabase
             .ref('expenses')
             .on('value', snapshot => {
                 this.setState({ expenses: snapshot.val() || [] })
@@ -27,7 +26,7 @@ class DatabaseForm extends Component {
     }
 
     _setDatabaseValue = value => {
-        dbSetValue('expenses', value)
+        AppDatabase.set('expenses', value)
             .then(response => console.log(response))
             .catch(err => console.log(err))
     }

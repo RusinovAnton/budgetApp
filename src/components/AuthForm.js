@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import auth from '../firebase/auth'
+
+import AppDatabase from '../firebase'
+
 import PreventDefaultForm from 'prevent-default-form'
 
 
@@ -26,7 +28,7 @@ class AuthForm extends Component {
     _createUserWithEmailAndPassword = () => {
         const { emailUp, passUp } = this.state
 
-        auth.createUserWithEmailAndPassword(emailUp, passUp)
+        AppDatabase.auth.createUserWithEmailAndPassword(emailUp, passUp)
             .catch(error => {
                 console.warn(error)
             })
@@ -35,7 +37,7 @@ class AuthForm extends Component {
     _signInWithEmailAndPassword = () => {
         const { emailIn, passIn } = this.state
 
-        auth.signInWithEmailAndPassword(emailIn, passIn)
+        AppDatabase.auth.signInWithEmailAndPassword(emailIn, passIn)
             .catch(error => {
                 console.warn(error)
             })
@@ -46,7 +48,7 @@ class AuthForm extends Component {
     }
 
     _signOut = () => {
-        auth.signOut()
+        AppDatabase.auth.signOut()
             .catch(error => {
                 console.warn(error)
             })
