@@ -4,6 +4,7 @@ import AppDatabase from '../firebase'
 
 import AuthForm from './AuthForm'
 import DatabaseForm from './DatabaseForm'
+import Loader from './Loader'
 import UserMenu from './UserMenu'
 
 class App extends Component {
@@ -11,8 +12,9 @@ class App extends Component {
         super(...arguments)
 
         this.state = {
-            user: null,
             error: null,
+            isPending: true,
+            user: null,
         }
     }
 
@@ -21,30 +23,31 @@ class App extends Component {
     }
 
     _onAuthStateChange = (user, error) => {
-        this.setState({ user, error })
+        this.setState({ user, error, isPending: false })
+    }
 
-        console.log(user, error)
+    _signOut = () => {
+        AppDatabase.auth.signOut()
+            .catch(error => {
+                this.setState({ error })
+            })
     }
 
     render() {
-        const { user, error } = this.state
+        const { error, isPending, user } = this.state
+
+        if (isPending) return <Loader/>
 
         return (
             <main>
-                <aside className="sidebar">
-                    <h2>Sidebar</h2>
-                    <ul>
-                        <li>some</li>
-                        <li>bullet</li>
-                        <li>list :D</li>
-                    </ul>
-                </aside>
+                <UserMenu user={ user } onSignOut={ this._signOut }/>
                 <div className="container">
                     <h2>Budget App</h2>
-                    <UserMenu user={ user }/>
                     { error && <span className="error">{ error }</span>}
-                    <AuthForm isLoggedIn={ !!user }/>
-                    { user && <DatabaseForm/> }
+                    { user ?
+                        <DatabaseForm uid={ user.uid }/>
+                        : <AuthForm />
+                    }
                 </div>
             </main>
         )

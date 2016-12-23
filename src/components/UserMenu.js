@@ -1,12 +1,14 @@
 import React, { PropTypes } from 'react'
 
-const UserMenu = ({ user }) => {
+
+const UserMenu = ({ user, onSignOut }) => {
     if (!user) return null
-    console.log(user)
+
     return (
-        <div>
-            <span>{ user.displayName }</span>
-        </div>
+        <aside className="sidebar">
+            <h2>{ user.displayName || 'Unknown' }</h2>
+            <button className='blue' onClick={ onSignOut }>Sign out</button>
+        </aside>
     )
 }
 

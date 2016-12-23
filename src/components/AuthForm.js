@@ -1,27 +1,20 @@
-import React, { Component, PropTypes } from 'react'
-
+import React, { Component } from 'react'
 import AppDatabase from '../firebase'
-
 import PreventDefaultForm from 'prevent-default-form'
 
 
 class AuthForm extends Component {
-
-    static propTypes = {
-        isLoggedIn: PropTypes.bool,
-    }
-
     constructor() {
         super()
 
         this.state = {
-
+            error: null,
+            // Sign up form
             emailUp: null,
             passUp: null,
-
+            // Sign in form
             emailIn: null,
             passIn: null,
-
         }
     }
 
@@ -30,7 +23,7 @@ class AuthForm extends Component {
 
         AppDatabase.auth.createUserWithEmailAndPassword(emailUp, passUp)
             .catch(error => {
-                console.warn(error)
+                this.setState({ error: error.message })
             })
     }
 
@@ -39,7 +32,7 @@ class AuthForm extends Component {
 
         AppDatabase.auth.signInWithEmailAndPassword(emailIn, passIn)
             .catch(error => {
-                console.warn(error)
+                this.setState({ error: error.message })
             })
     }
 
@@ -47,42 +40,26 @@ class AuthForm extends Component {
         this.setState({ [name]: value })
     }
 
-    _signOut = () => {
-        AppDatabase.auth.signOut()
-            .catch(error => {
-                console.warn(error)
-            })
-    }
-
     render() {
-        const { isLoggedIn } = this.props
-
+        const { error } = this.state
 
         return (
-            <div>
-                { isLoggedIn ?
-                    (
-                        <button onClick={ this._signOut }>Sign out</button>
-                    ) :
-                    (
-                        <div>
-                            <PreventDefaultForm submitLabel='Sign up'
-                                                onSubmit={ this._createUserWithEmailAndPassword }>
-                                <input type="email" name="emailUp" onChange={ this._inputChange }/>
-                                <input type="password" name="passUp" onChange={ this._inputChange }/>
-                            </PreventDefaultForm>
-                            <PreventDefaultForm submitLabel='Sign in'
-                                                onSubmit={ this._signInWithEmailAndPassword }>
-                                <input type="email" name="emailIn" onChange={ this._inputChange }/>
-                                <input type="password" name="passIn" onChange={ this._inputChange }/>
-                            </PreventDefaultForm>
-                        </div>
-                    )
-                }
+            <div className="authForm">
+                { error && <p className="error-message">{ error }</p>}
+                <PreventDefaultForm submitLabel='Sign up'
+                                    buttonProps={{ className: 'red' }}
+                                    onSubmit={ this._createUserWithEmailAndPassword }>
+                    <input type="email" name="emailUp" onChange={ this._inputChange }/>
+                    <input type="password" name="passUp" onChange={ this._inputChange }/>
+                </PreventDefaultForm> - or - <PreventDefaultForm submitLabel='Sign in'
+                                                                 buttonProps={{ className: 'green' }}
+                                                                 onSubmit={ this._signInWithEmailAndPassword }>
+                <input type="email" name="emailIn" onChange={ this._inputChange }/>
+                <input type="password" name="passIn" onChange={ this._inputChange }/>
+            </PreventDefaultForm>
             </div>
         )
     }
-
 }
 
 export default AuthForm

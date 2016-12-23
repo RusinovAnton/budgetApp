@@ -1,34 +1,39 @@
-import React, { Component } from 'react'
-
+import React, { Component, PropTypes } from 'react'
 import AppDatabase from '../firebase'
-
 import Form from 'prevent-default-form'
+import Loader from './Loader'
 
 
 class DatabaseForm extends Component {
+    static propTypes = {
+        uid: PropTypes.string.isRequired
+    }
 
     constructor() {
         super(...arguments)
 
+        this.ref = AppDatabase.ref(arguments[0].uid)
         this.state = {
             expenses: [],
             sum: null,
             title: null,
+            isPending: true,
         }
     }
 
     componentDidMount() {
-        AppDatabase
-            .ref('expenses')
+        this.ref
             .on('value', snapshot => {
-                this.setState({ expenses: snapshot.val() || [] })
+                this.setState({ expenses: snapshot.child('expenses').val() || [], isPending: false })
             })
     }
 
     _setDatabaseValue = value => {
-        AppDatabase.set('expenses', value)
+        const { uid } = this.props
+
+        AppDatabase.set(`${uid}/expenses`, value)
             .then(response => console.log(response))
-            .catch(err => console.log(err))
+            .catch(error => { this.setState({ error: error.message }) })
     }
 
     _submitExpenseItem = () => {
@@ -53,7 +58,9 @@ class DatabaseForm extends Component {
     }
 
     render() {
-        const { expenses } = this.state
+        const { expenses, isPending } = this.state
+
+        if (isPending) return <Loader/>
 
         return (
             <div>
@@ -76,7 +83,6 @@ class DatabaseForm extends Component {
             </div>
         )
     }
-
 }
 
 export default DatabaseForm
