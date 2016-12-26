@@ -116,3 +116,11 @@ button:hover {
     border: 1px solid currentColor;
     border-radius: 2px;
 }
+
+.onRemove {
+    color: #f00;
+}
+
+.expense-item > span:not(:first-child) {
+    margin-left: 3px;
+}

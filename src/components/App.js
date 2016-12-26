@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 
-import AppDatabase from '../firebase'
+import AppDatabase from '../appBase'
 
 import AuthForm from './AuthForm'
-import DatabaseForm from './DatabaseForm'
+import ExpensesForm from './ExpensesForm'
+import ErrorMessage from './ErrorMessage'
 import Loader from './Loader'
 import UserMenu from './UserMenu'
 
@@ -43,9 +44,9 @@ class App extends Component {
                 <UserMenu user={ user } onSignOut={ this._signOut }/>
                 <div className="container">
                     <h2>Budget App</h2>
-                    { error && <span className="error">{ error }</span>}
+                    <ErrorMessage message={ error }/>
                     { user ?
-                        <DatabaseForm uid={ user.uid }/>
+                        <ExpensesForm />
                         : <AuthForm />
                     }
                 </div>

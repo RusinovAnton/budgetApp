@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import AppDatabase from '../firebase'
+import AppDatabase from '../appBase'
 import PreventDefaultForm from 'prevent-default-form'
 
 

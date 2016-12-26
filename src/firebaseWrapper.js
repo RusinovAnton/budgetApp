@@ -38,6 +38,20 @@ class Firebase {
                 throw err
             })
     }
+
+    currentUser(ref, value) {
+        let reference = this._auth.currentUser.uid
+
+        if (typeof ref === 'string' || typeof ref === 'number') {
+            reference += ref
+        }
+
+        if (typeof value !== 'undefined' && value !== null) {
+            return this.set(reference, value)
+        }
+
+        return this.ref(reference)
+    }
 }
 
-export default new Firebase()
+export default Firebase
