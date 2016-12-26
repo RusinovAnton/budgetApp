@@ -1,20 +1,20 @@
 {
-    "name": "budgetApp",
-    "version": "0.0.0-beta",
-    "private": true,
-    "devDependencies": {
-        "react-scripts": "0.8.4"
-    },
-    "dependencies": {
-        "firebase": "^3.6.4",
-        "prevent-default-form": "^1.1.1",
-        "react": "^15.4.1",
-        "react-dom": "^15.4.1"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test --env=jsdom",
-        "eject": "react-scripts eject"
-    }
+  "name": "budgetApp",
+  "version": "0.0.0",
+  "private": true,
+  "devDependencies": {
+    "react-scripts": "0.8.4"
+  },
+  "dependencies": {
+    "firebase": "^3.6.4",
+    "prevent-default-form": "^1.1.1",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
 }
