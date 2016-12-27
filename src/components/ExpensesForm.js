@@ -16,8 +16,9 @@ class ExpensesForm extends Component {
     }
 
     static _getInitialState = state => Object.assign({
-        expenses: null,
+        date: '',
         error: null,
+        expenses: null,
         isPending: false,
         sum: '',
         title: '',
@@ -35,17 +36,38 @@ class ExpensesForm extends Component {
     _onError = error => { this.setState({ error })}
 
     _setDatabaseValue = value => {
+        this.setState({ isPending: true })
+
         AppDatabase.currentUser('/expenses', value)
             .then(() => {
-                this.setState(ExpensesForm._getInitialState({ expenses: this.state.expenses }))
+                this.setState(ExpensesForm._getInitialState({ isPending: false, expenses: this.state.expenses }))
             })
-            .catch(error => { this.setState({ error: error.message }) })
+            .catch(error => { this.setState({ isPending: false, error: error.message }) })
+    }
+
+    _getCurrentDate = () => {
+        const today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth() + 1;
+
+        const yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        return yyyy + '-' + mm + '-' + dd;
     }
 
     _submitExpenseItem = () => {
-        const { expenses, sum, title, type } = this.state
+        const { expenses, sum, title, type, date } = this.state
 
-        this._setDatabaseValue(expenses.concat({ sum, title, type }))
+        if (!sum || !title || !type || !date) return
+
+        const expenseItem = { sum, title, type, date, createdAt: this._getCurrentDate() }
+
+        this._setDatabaseValue(expenses.concat(expenseItem))
     }
 
     _onInputChange = ({ target: { type, name, value } }) => {
@@ -70,7 +92,7 @@ class ExpensesForm extends Component {
     }
 
     render() {
-        const { expenses, error, sum, title, type, isPending } = this.state
+        const { expenses, date, error, sum, title, type, isPending } = this.state
 
         if (!expenses && isPending) return <Loader/>
 
@@ -78,10 +100,11 @@ class ExpensesForm extends Component {
             <div>
                 { isPending && <Loader/> }
                 <ErrorMessage message={ error }/>
-                <Form onSubmit={ this._submitExpenseItem }>
+                <Form buttonProps={{ disabled: isPending }} onSubmit={ this._submitExpenseItem }>
                     <SelectExpenseType name='type' value={ type } onChange={ this._onInputChange }/>
                     <input type="number" value={ sum } step='any' name="sum" onChange={ this._onInputChange }/>
                     <input type="text" value={ title } name="title" onChange={ this._onInputChange }/>
+                    <input type="date" value={ date } name='date' onChange={ this._onInputChange }/>
                 </Form>
                 <ExpensesList expenses={ expenses } removeItem={ this._removeExpenseItem } onError={ this._onError }/>
             </div>

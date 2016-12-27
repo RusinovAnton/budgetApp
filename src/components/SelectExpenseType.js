@@ -30,6 +30,7 @@ class SelectExpenseType extends Component {
             <span>
                 <ErrorMessage message={ error }/>
                 <select {...this.props}>
+                    <option>----</option>
                     { types.map((name, id) =>
                         <option key={ id } value={ id }>{ name }</option>) }
                 </select>
