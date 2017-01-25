@@ -1,43 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import enums from '../enums'
-import ErrorMessage from './ErrorMessage'
 
-class SelectExpenseType extends Component {
-    constructor() {
-        super(...arguments)
+import { FetchSelect as Select } from 'react-select3'
+import 'react-select3/dist/styles.css'
 
-        this.state = {
-            error: null,
-            isPending: true,
-            types: null,
-        }
-    }
+const ajaxClient = () => enums().then(({ expenseTypes }) => expenseTypes)
+const responseDataFormatter = (item) => ({ id: item, text: item })
 
-    componentDidMount() {
-        enums
-            .then(({ expenseTypes: types }) => {
-                this.setState({ isPending: false, types })
-            })
-            .catch(error => { this.setState({ error, isPending: false }) })
-    }
 
-    render() {
-        const { types, isPending, error } = this.state
-
-        if (isPending) return <span>...</span>
-
-        return (
-            <span>
-                <ErrorMessage message={ error }/>
-                <select {...this.props}>
-                    <option>----</option>
-                    { types.map((name, id) =>
-                        <option key={ id } value={ id }>{ name }</option>) }
-                </select>
-            </span>
-        )
-    }
-
-}
+const SelectExpenseType = props => <Select fetch={{ once: true, ajaxClient, responseDataFormatter }} {...props}/>
 
 export default SelectExpenseType
